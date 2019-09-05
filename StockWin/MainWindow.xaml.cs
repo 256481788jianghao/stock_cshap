@@ -23,6 +23,13 @@ namespace StockWin
         public MainWindow()
         {
             InitializeComponent();
+            ConfigureReader.Init();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ConfigForm form = new ConfigForm();
+            form.Show();
         }
     }
 }

@@ -6,7 +6,18 @@
         xmlns:local="clr-namespace:StockWin"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="MenuItem">
+            <Setter Property="FontSize" Value="15"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="操作"></MenuItem>
+            <MenuItem Header="参数配置" Click="MenuItem_Click"></MenuItem>
+        </Menu>
     </Grid>
 </Window>
