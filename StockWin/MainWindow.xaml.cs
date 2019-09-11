@@ -25,6 +25,10 @@ namespace StockWin
         List<TableNameItem> TableNameList = new List<TableNameItem>();
         List<TableNameItem> TableInfoList = new List<TableNameItem>();
 
+        StockBasicMgr m_StockBasicMgr = new StockBasicMgr();
+        TradeCalMgr m_TradeCalMgr = new TradeCalMgr();
+        AdjFactorMgr m_AdjFactorMgr = new AdjFactorMgr();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -73,6 +77,10 @@ namespace StockWin
             }
             
             ListView_TableTree.ItemsSource = TableNameList;
+
+            m_StockBasicMgr.Init();
+            m_TradeCalMgr.Init();
+            //m_AdjFactorMgr.Init();
         }
 
         class TableNameItem
@@ -88,10 +96,7 @@ namespace StockWin
 
         private void MenuItem_Test_Click(object sender, RoutedEventArgs e)
         {
-            AnsListViewForm form = new AnsListViewForm();
-            form.SetTitle("woshijianghao");
-            form.SetColumns(new string[3] { "1", "2", "3"});
-            form.Show();
+            List<AdjFactorMgr.AdjFactorItem> list = m_AdjFactorMgr.GetAdjFactor("000001.SZ",DateTime.MinValue);
         }
     }
 }

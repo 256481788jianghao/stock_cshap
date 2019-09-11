@@ -10,6 +10,9 @@
         <Style TargetType="MenuItem">
             <Setter Property="FontSize" Value="15"></Setter>
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="2,2,2,2"></Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,6 +39,19 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    
+                </Grid.ColumnDefinitions>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

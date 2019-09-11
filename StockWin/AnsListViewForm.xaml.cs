@@ -40,6 +40,22 @@ namespace StockWin
             }
         }
 
+        public void SetColumns(string[] Headers, string [] BindingNames)
+        {
+            if(Headers.Count() != BindingNames.Count())
+            {
+                MessageBox.Show("名字和绑定必须相等！！！");
+                return;
+            }
+            for(int i=0;i<Headers.Count();i++)
+            {
+                GridViewColumn col = new GridViewColumn();
+                col.Header = Headers[i];
+                col.DisplayMemberBinding = new Binding(BindingNames[i]);
+                GridView_Ans.Columns.Add(col);
+            }
+        }
+
         public void SetItemsSource<T>(List<T> source)
         {
             ListView_Ans.ItemsSource = source;
