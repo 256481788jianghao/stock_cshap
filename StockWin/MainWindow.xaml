@@ -14,10 +14,28 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="操作"></MenuItem>
+            <MenuItem Header="操作">
+                <MenuItem x:Name="MenuItem_LoadDB" Header="数据库载入" Click="MenuItem_LoadDB_Click"></MenuItem>
+                <MenuItem x:Name="MenuItem_Test" Header="Test" Click="MenuItem_Test_Click" ></MenuItem>
+            </MenuItem>
             <MenuItem Header="参数配置" Click="MenuItem_Click"></MenuItem>
         </Menu>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="ListView_TableTree" Grid.Column="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="表名" DisplayMemberBinding="{Binding Path=name}"  />
+                        <GridViewColumn Header="更新时间" DisplayMemberBinding="{Binding Path=date}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
 </Window>

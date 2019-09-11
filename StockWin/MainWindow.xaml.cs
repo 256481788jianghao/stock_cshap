@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,15 +22,75 @@ namespace StockWin
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<TableNameItem> TableNameList = new List<TableNameItem>();
+        List<TableNameItem> TableInfoList = new List<TableNameItem>();
+
         public MainWindow()
         {
             InitializeComponent();
             ConfigureReader.Init();
+            SQLiteHelper.m_Path = ConfigureReader.ConfigP.StockDBP.StockDBPath;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             ConfigForm form = new ConfigForm();
+            form.Show();
+        }
+
+        private void MenuItem_LoadDB_Click(object sender, RoutedEventArgs e)
+        {
+            DataTable table = SQLiteHelper.GetDataTable(@"SELECT name FROM sqlite_master", new SQLiteParameter[0]);
+            for(int i = 0; i < table.Rows.Count; i++)
+            {
+                string TableName = table.Rows[i][0].ToString();
+                if (TableName.StartsWith("ix"))
+                    continue;
+                TableNameList.Add(new TableNameItem(TableName));
+            }
+
+            DataTable tables_info = SQLiteHelper.GetDataTable(@"SELECT * FROM tables_info", new SQLiteParameter[0]);
+            for(int i = 0; i < tables_info.Columns.Count; i++)
+            {
+                string cName = tables_info.Columns[i].ToString();
+                string dateStr = tables_info.Rows[0][i].ToString();
+                if (cName == "index")
+                    continue;
+                DateTime d = DateTime.ParseExact(dateStr,"yyyyMMdd", System.Globalization.CultureInfo.CurrentCulture);
+                TableNameItem item = new TableNameItem(cName);
+                item.date = d;
+                TableInfoList.Add(item);
+            }
+
+            foreach(TableNameItem info in TableInfoList)
+            {
+                string key = info.name.Substring(0, info.name.Length - 5);
+                TableNameItem NameItem = TableNameList.Find(it => it.name == key || it.name == info.name);
+                if(NameItem != null)
+                {
+                    NameItem.date = info.date;
+                }
+            }
+            
+            ListView_TableTree.ItemsSource = TableNameList;
+        }
+
+        class TableNameItem
+        {
+            public string name { get; set; }
+            public DateTime date { get; set; }
+            public TableNameItem(string na)
+            {
+                name = na;
+                date = DateTime.MinValue;
+            }
+        }
+
+        private void MenuItem_Test_Click(object sender, RoutedEventArgs e)
+        {
+            AnsListViewForm form = new AnsListViewForm();
+            form.SetTitle("woshijianghao");
+            form.SetColumns(new string[3] { "1", "2", "3"});
             form.Show();
         }
     }
