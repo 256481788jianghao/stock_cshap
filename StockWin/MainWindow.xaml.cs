@@ -28,6 +28,7 @@ namespace StockWin
         StockBasicMgr m_StockBasicMgr = new StockBasicMgr();
         TradeCalMgr m_TradeCalMgr = new TradeCalMgr();
         AdjFactorMgr m_AdjFactorMgr = new AdjFactorMgr();
+        MoneyFlowMgr m_MoneyFlowMgr = new MoneyFlowMgr();
 
         public MainWindow()
         {
@@ -96,7 +97,7 @@ namespace StockWin
 
         private void MenuItem_Test_Click(object sender, RoutedEventArgs e)
         {
-            List<AdjFactorMgr.AdjFactorItem> list = m_AdjFactorMgr.GetAdjFactor("000001.SZ",DateTime.MinValue);
+            List<MoneyFlowMgr.MoneyFlowItem> list = m_MoneyFlowMgr.GetMoneyFlow("603798.SH",DateTime.Now.AddDays(-1));
         }
     }
 }

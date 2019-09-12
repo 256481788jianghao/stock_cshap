@@ -80,6 +80,7 @@
     <Compile Include="AnsListViewForm.xaml.cs">
       <DependentUpon>AnsListViewForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MoneyFlowMgr.cs" />
     <Compile Include="SqliteHelper.cs" />
     <Compile Include="StockBasicMgr.cs" />
     <Compile Include="TradeCalMgr.cs" />
