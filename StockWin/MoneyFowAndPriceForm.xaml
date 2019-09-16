@@ -1,0 +1,71 @@
+﻿<Window x:Class="StockWin.MoneyFowAndPriceForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StockWin"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Title="资金流与股价的关系图" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="Label_StockName" FontSize="24" Content="Test" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+            <DatePicker x:Name="DatePicker_SDate" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"></DatePicker>
+            <DatePicker x:Name="DatePicker_EDate" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1"></DatePicker>
+            <ComboBox x:Name="ComboBox_MoneyType" Grid.Row="1" Grid.Column="2" Margin="2" SelectedIndex="0">
+                <ComboBoxItem Content="特大买单总额"/>
+                <ComboBoxItem Content="大单与特大单买入总额"/>
+                <ComboBoxItem Content="特大单与大单净额"/>
+            </ComboBox>
+            <Button x:Name="Button_Do" Grid.Row="2" Content="查询" Grid.Column="3" Margin="2" Click="Button_Do_Click"></Button>
+            <ProgressBar x:Name="ProgressBar_Progress" Grid.Row="3" Grid.ColumnSpan="4" Value="10" Margin="2"/>
+        </Grid>
+        <GroupBox Header="赛选">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Content="关键字:"></Label>
+                <TextBox x:Name="TextBox_KeyWord" Grid.Column="1"></TextBox>
+                <Button x:Name="Button_Select" Grid.Row="4" Grid.Column="1" Content="检索" Click="Button_Select_Click"></Button>
+            </Grid>
+        </GroupBox>
+        <ListView x:Name="ListView_StockList" SelectionChanged="ListView_StockList_SelectionChanged" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="代码" DisplayMemberBinding="{Binding Path=ts_code}"/>
+                    <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Path=name}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <lvc:CartesianChart x:Name="Carts_MP" Series="{Binding SeriesCollection}" Grid.Row="1" Grid.Column="1" MouseWheel="Carts_MP_MouseWheel" />
+    </Grid>
+</Window>

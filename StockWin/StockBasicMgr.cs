@@ -14,20 +14,20 @@ namespace StockWin
 
         public class StockBasicItem
         {
-            public string ts_code; // TS代码
-            public string symbol; // 股票代码
-            public string name; // 股票名称
-            public string area; // 所在地域
-            public string industry; // 所属行业
-            //public string fullname; // 股票全称
-            //public string enname; // 英文全称
-            //public string market; // 市场类型 （主板/中小板/创业板）
-            //public string exchange; // 交易所代码
-            //public string curr_type; // 交易货币
-            //public string list_status; // 上市状态： L上市 D退市 P暂停上市
-            public DateTime list_date; // 上市日期
-            //public string delist_date; // 退市日期
-            //public string is_hs; // 是否沪深港通标的，N否 H沪股通 S深股通
+            public string ts_code { get; set; } // TS代码
+            public string symbol { get; set; } // 股票代码
+            public string name {get;set;} // 股票名称
+            public string area {get;set;} // 所在地域
+            public string industry {get;set;} // 所属行业
+            //public string fullname {get;set;} // 股票全称
+            //public string enname {get;set;} // 英文全称
+            //public string market {get;set;} // 市场类型 （主板/中小板/创业板）
+            //public string exchange {get;set;} // 交易所代码
+            //public string curr_type {get;set;} // 交易货币
+            //public string list_status {get;set;} // 上市状态： L上市 D退市 P暂停上市
+            public DateTime list_date {get;set;} // 上市日期
+            //public string delist_date {get;set;} // 退市日期
+            //public string is_hs {get;set;} // 是否沪深港通标的，N否 H沪股通 S深股通
 
             public StockBasicItem()
             {

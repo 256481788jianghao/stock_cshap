@@ -62,27 +62,12 @@ namespace StockWin
 
         DataTable m_Table = null;
 
-        private void Init(string ts_code, DateTime stime)
+        private void Init(string ts_code, DateTime stime, DateTime etime)
         {
             m_MoneyFlowList.Clear();
-            string cmd = @"SELECT * FROM money_flow";
-            if (String.IsNullOrEmpty(ts_code))
-            {
-                if (stime != DateTime.MinValue)
-                {
-                    string date = stime.ToString("yyyyMMdd");
-                    cmd += " where trade_date = '" + date + "'";
-                }
-            }
-            else
-            {
-                cmd += " where ts_code = '" + ts_code + "'";
-                if (stime != DateTime.MinValue)
-                {
-                    string date = stime.ToString("yyyyMMdd");
-                    cmd += " and trade_date = '" + date + "'";
-                }
-            }
+            string st = stime.ToString("yyyyMMdd");
+            string et = etime.ToString("yyyyMMdd");
+            string cmd = @"SELECT * FROM money_flow where trade_date >= " + st + " and trade_date <= " + et + " and ts_code = '" + ts_code + "'";
             m_Table = SQLiteHelper.GetDataTable(cmd, new SQLiteParameter[0]);
             if (m_Table != null)
             {
@@ -114,9 +99,9 @@ namespace StockWin
             }
         }
 
-        public List<MoneyFlowItem> GetMoneyFlow(string ts_code, DateTime stime)
+        public List<MoneyFlowItem> GetMoneyFlow(string ts_code, DateTime stime, DateTime etime)
         {
-            Init(ts_code, stime);
+            Init(ts_code, stime, etime);
             return m_MoneyFlowList;
         }
     }

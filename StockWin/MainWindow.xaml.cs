@@ -25,11 +25,6 @@ namespace StockWin
         List<TableNameItem> TableNameList = new List<TableNameItem>();
         List<TableNameItem> TableInfoList = new List<TableNameItem>();
 
-        StockBasicMgr m_StockBasicMgr = new StockBasicMgr();
-        TradeCalMgr m_TradeCalMgr = new TradeCalMgr();
-        AdjFactorMgr m_AdjFactorMgr = new AdjFactorMgr();
-        MoneyFlowMgr m_MoneyFlowMgr = new MoneyFlowMgr();
-
         public MainWindow()
         {
             InitializeComponent();
@@ -79,9 +74,7 @@ namespace StockWin
             
             ListView_TableTree.ItemsSource = TableNameList;
 
-            m_StockBasicMgr.Init();
-            m_TradeCalMgr.Init();
-            //m_AdjFactorMgr.Init();
+            GVL.Init();
         }
 
         class TableNameItem
@@ -97,7 +90,13 @@ namespace StockWin
 
         private void MenuItem_Test_Click(object sender, RoutedEventArgs e)
         {
-            List<MoneyFlowMgr.MoneyFlowItem> list = m_MoneyFlowMgr.GetMoneyFlow("603798.SH",DateTime.Now.AddDays(-1));
+            List<DailyMgr.DailyItem> list = GVL.DailyMgr.GetDaily("603798.SH",DateTime.Now.AddDays(-1),DateTime.Now.AddDays(-1));
+        }
+
+        private void Button_MoneyFlowAndPrice_Click(object sender, RoutedEventArgs e)
+        {
+            MoneyFowAndPriceForm form = new MoneyFowAndPriceForm();
+            form.Show();
         }
     }
 }

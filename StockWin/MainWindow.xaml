@@ -45,12 +45,14 @@
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
-                    
                 </Grid.ColumnDefinitions>
+                <Button x:Name="Button_MoneyFlowAndPrice" Content="股价与资金流关系" Click="Button_MoneyFlowAndPrice_Click"></Button>
             </Grid>
         </Grid>
     </Grid>
