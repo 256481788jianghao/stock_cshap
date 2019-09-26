@@ -55,7 +55,8 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="关键字:"></Label>
                 <TextBox x:Name="TextBox_KeyWord" Grid.Column="1"></TextBox>
-                <Button x:Name="Button_Select" Grid.Row="4" Grid.Column="1" Content="检索" Click="Button_Select_Click"></Button>
+                <Button x:Name="Button_Select_Ex" Grid.Row="4" Grid.Column="0" Content="复杂检索" Margin="2" Click="Button_Select_Ex_Click" ></Button>
+                <Button x:Name="Button_Select" Grid.Row="4" Grid.Column="1" Content="检索" Click="Button_Select_Click" Margin="2"></Button>
             </Grid>
         </GroupBox>
         <ListView x:Name="ListView_StockList" SelectionChanged="ListView_StockList_SelectionChanged" Grid.Row="1">

@@ -30,6 +30,8 @@ namespace StockWin
             InitializeComponent();
             ConfigureReader.Init();
             SQLiteHelper.m_Path = ConfigureReader.ConfigP.StockDBP.StockDBPath;
+            DatePicker_Select_SDate.Text = DateTime.Now.AddDays(-30).ToShortDateString();
+            DatePicker_Select_EDate.Text = DateTime.Now.ToShortDateString();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -75,6 +77,7 @@ namespace StockWin
             ListView_TableTree.ItemsSource = TableNameList;
 
             GVL.Init();
+            ListView_StockList.ItemsSource = GVL.StockBasicMgr.GetStockBasic();
         }
 
         class TableNameItem
@@ -90,13 +93,45 @@ namespace StockWin
 
         private void MenuItem_Test_Click(object sender, RoutedEventArgs e)
         {
-            List<DailyMgr.DailyItem> list = GVL.DailyMgr.GetDaily("603798.SH",DateTime.Now.AddDays(-1),DateTime.Now.AddDays(-1));
+            List<DailyBasicMgr.DailyBasicItem> list = GVL.DailyBasicMgr.GetDailyBasic(DateTime.Now.AddDays(-10),DateTime.Now.AddDays(-5));
         }
 
         private void Button_MoneyFlowAndPrice_Click(object sender, RoutedEventArgs e)
         {
             MoneyFowAndPriceForm form = new MoneyFowAndPriceForm();
             form.Show();
+        }
+
+        private void Button_Do_Select_Click(object sender, RoutedEventArgs e)
+        {
+            List<StockBasicMgr.StockBasicItem> stockSubList = GVL.StockBasicMgr.GetStockBasic();
+            
+            if (!String.IsNullOrEmpty(TextBox_KeyWord.Text))
+            {
+                stockSubList = stockSubList.FindAll(it => it.name.IndexOf(TextBox_KeyWord.Text) > -1);
+            }
+
+            if(!string.IsNullOrEmpty(TextBox_Turnover_low.Text) && !string.IsNullOrEmpty(TextBox_Turnover_height.Text))
+            {
+                DateTime sDate = Convert.ToDateTime(DatePicker_Select_SDate.Text);
+                DateTime eDate = Convert.ToDateTime(DatePicker_Select_EDate.Text);
+                List<DailyBasicMgr.DailyBasicItem> dailyBasicList = GVL.DailyBasicMgr.GetDailyBasic(sDate, eDate);
+
+                double low_turnover = Convert.ToDouble(TextBox_Turnover_low.Text);
+                double hieght_turnover = Convert.ToDouble(TextBox_Turnover_height.Text);
+                List<DailyBasicMgr.DailyBasicItem> sub_dailyBasicList = dailyBasicList.FindAll(it => it.turnover_rate_f >= low_turnover && it.turnover_rate_f <= hieght_turnover);
+
+                
+
+            }
+
+            ListView_StockList.ItemsSource = stockSubList;
+            
+        }
+
+        private void Button_Do_ChangeSelect_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StockWin
 {
-    class StockBasicMgr
+    public class StockBasicMgr
     {
         DataTable m_Table = null;
 

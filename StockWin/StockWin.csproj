@@ -86,11 +86,15 @@
     <Compile Include="AnsListViewForm.xaml.cs">
       <DependentUpon>AnsListViewForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DailyBasicMgr.cs" />
     <Compile Include="DailyMgr.cs" />
     <Compile Include="GVL.cs" />
     <Compile Include="MoneyFlowMgr.cs" />
     <Compile Include="MoneyFowAndPriceForm.xaml.cs">
       <DependentUpon>MoneyFowAndPriceForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectExForm.xaml.cs">
+      <DependentUpon>SelectExForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="SqliteHelper.cs" />
     <Compile Include="StockBasicMgr.cs" />
@@ -120,6 +124,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MoneyFowAndPriceForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectExForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

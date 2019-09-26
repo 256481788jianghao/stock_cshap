@@ -13,6 +13,7 @@ namespace StockWin
         public static AdjFactorMgr AdjFactorMgr = new AdjFactorMgr();
         public static MoneyFlowMgr MoneyFlowMgr = new MoneyFlowMgr();
         public static DailyMgr DailyMgr = new DailyMgr();
+        public static DailyBasicMgr DailyBasicMgr = new DailyBasicMgr();
 
         public static void Init()
         {

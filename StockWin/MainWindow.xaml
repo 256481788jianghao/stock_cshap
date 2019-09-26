@@ -13,6 +13,15 @@
         <Style TargetType="Button">
             <Setter Property="Margin" Value="2,2,2,2"></Setter>
         </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="Margin" Value="2,2,2,2"></Setter>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="2,2,2,2"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="2,2,2,2"></Setter>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -27,11 +36,58 @@
             <MenuItem Header="参数配置" Click="MenuItem_Click"></MenuItem>
         </Menu>
         <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <ListView x:Name="ListView_TableTree" Grid.Column="0">
+            <GroupBox Grid.ColumnSpan="2" Header="筛选">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="关键字:"></Label>
+                    <TextBox x:Name="TextBox_KeyWord" Grid.Column="1"></TextBox>
+                    <DatePicker x:Name="DatePicker_Select_SDate" Grid.Row="0" Grid.Column="2"></DatePicker>
+                    <DatePicker x:Name="DatePicker_Select_EDate" Grid.Row="1" Grid.Column="2"></DatePicker>
+                    <Label Grid.Column="3" Content="换手率:"></Label>
+                    <TextBox x:Name="TextBox_Turnover_low" Grid.Column="4"></TextBox>
+                    <TextBox x:Name="TextBox_Turnover_height" Grid.Column="5"></TextBox>
+                    <Button x:Name="Button_Do_Select" Grid.Row="1" Grid.Column="1" Content="查询" Click="Button_Do_Select_Click"></Button>
+                    <Button x:Name="Button_Do_ChangeSelect" Grid.Column="6" Content="查询" Click="Button_Do_ChangeSelect_Click"></Button>
+                </Grid>
+            </GroupBox>
+            <ListView x:Name="ListView_StockList" Grid.Row="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="代码" DisplayMemberBinding="{Binding Path=ts_code}"/>
+                        <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Path=name}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView x:Name="ListView_TableTree" Grid.Column="0" Grid.Row="2">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="表名" DisplayMemberBinding="{Binding Path=name}"  />
@@ -52,7 +108,7 @@
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="Button_MoneyFlowAndPrice" Content="股价与资金流关系" Click="Button_MoneyFlowAndPrice_Click"></Button>
+                <!--Button x:Name="Button_MoneyFlowAndPrice" Content="股价与资金流关系" Click="Button_MoneyFlowAndPrice_Click"></-->
             </Grid>
         </Grid>
     </Grid>

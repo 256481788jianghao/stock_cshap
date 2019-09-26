@@ -30,7 +30,8 @@ namespace StockWin
         {
             InitializeComponent();
 
-            ListView_StockList.ItemsSource = GVL.StockBasicMgr.GetStockBasic();
+            m_CurrentDataList = GVL.StockBasicMgr.GetStockBasic();
+            ListView_StockList.ItemsSource = m_CurrentDataList;
 
             DatePicker_SDate.Text = DateTime.Now.AddDays(-30).ToShortDateString();
             DatePicker_EDate.Text = DateTime.Now.ToShortDateString();
@@ -142,18 +143,34 @@ namespace StockWin
         {
             if (String.IsNullOrEmpty(TextBox_KeyWord.Text))
             {
-                ListView_StockList.ItemsSource = GVL.StockBasicMgr.GetStockBasic();
+                m_CurrentDataList = GVL.StockBasicMgr.GetStockBasic();
+                ListView_StockList.ItemsSource = m_CurrentDataList;
             }
             else
             {
                 string keyValue = TextBox_KeyWord.Text;
-                List<StockBasicMgr.StockBasicItem> list = GVL.StockBasicMgr.GetStockBasic();
-                List<StockBasicMgr.StockBasicItem> sublist = list.FindAll(it => it.name.IndexOf(keyValue) >= 0);
+                //List<StockBasicMgr.StockBasicItem> list = GVL.StockBasicMgr.GetStockBasic();
+                List<StockBasicMgr.StockBasicItem> sublist = m_CurrentDataList.FindAll(it => it.name.IndexOf(keyValue) >= 0);
                 if(sublist != null)
                 {
+                    //m_CurrentDataList = sublist;
                     ListView_StockList.ItemsSource = sublist;
                 }
             }
+        }
+
+        List<StockBasicMgr.StockBasicItem> m_CurrentDataList = null;
+
+        void UpdateList(List<StockBasicMgr.StockBasicItem> list)
+        {
+            ListView_StockList.ItemsSource = list;
+        }
+
+        private void Button_Select_Ex_Click(object sender, RoutedEventArgs e)
+        {
+            SelectExForm form = new SelectExForm();
+            form.OnUpdateList += new SelectExForm.UpdateList(UpdateList);
+            form.Show();
         }
     }
 }
