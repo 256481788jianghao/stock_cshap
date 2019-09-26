@@ -105,33 +105,44 @@ namespace StockWin
         private void Button_Do_Select_Click(object sender, RoutedEventArgs e)
         {
             List<StockBasicMgr.StockBasicItem> stockSubList = GVL.StockBasicMgr.GetStockBasic();
+            List<ShowStockItem> showList = new List<ShowStockItem>();
             
             if (!String.IsNullOrEmpty(TextBox_KeyWord.Text))
             {
                 stockSubList = stockSubList.FindAll(it => it.name.IndexOf(TextBox_KeyWord.Text) > -1);
             }
-
-            if(!string.IsNullOrEmpty(TextBox_Turnover_low.Text) && !string.IsNullOrEmpty(TextBox_Turnover_height.Text))
+            foreach(StockBasicMgr.StockBasicItem item in stockSubList)
             {
-                DateTime sDate = Convert.ToDateTime(DatePicker_Select_SDate.Text);
-                DateTime eDate = Convert.ToDateTime(DatePicker_Select_EDate.Text);
-                List<DailyBasicMgr.DailyBasicItem> dailyBasicList = GVL.DailyBasicMgr.GetDailyBasic(sDate, eDate);
-
-                double low_turnover = Convert.ToDouble(TextBox_Turnover_low.Text);
-                double hieght_turnover = Convert.ToDouble(TextBox_Turnover_height.Text);
-                List<DailyBasicMgr.DailyBasicItem> sub_dailyBasicList = dailyBasicList.FindAll(it => it.turnover_rate_f >= low_turnover && it.turnover_rate_f <= hieght_turnover);
-
-                
-
+                showList.Add(new ShowStockItem(item.ts_code, item.name));
             }
 
-            ListView_StockList.ItemsSource = stockSubList;
+            ListView_StockList.ItemsSource = showList;
             
         }
 
         private void Button_Do_ChangeSelect_Click(object sender, RoutedEventArgs e)
         {
+            if(!string.IsNullOrEmpty(TextBox_Turnover_low.Text) && !string.IsNullOrEmpty(TextBox_Turnover_height.Text))
+            {
+                DateTime sDate = Convert.ToDateTime(DatePicker_Select_SDate.Text);
+                DateTime eDate = Convert.ToDateTime(DatePicker_Select_EDate.Text);
 
+                string sDateStr = sDate.ToString("yyyyMMdd");
+                string eDateStr = eDate.ToString("yyyyMMdd");
+
+                string turnover_low = TextBox_Turnover_low.Text;
+                string turnover_height = TextBox_Turnover_height.Text;
+
+                DataTable tables_info = SQLiteHelper.GetDataTable(@"SELECT stock_basic.ts_code,stock_basic.name FROM stock_basic,daily_basic 
+                                                                    where stock_basic.ts_code = daily_basic.ts_code and daily_basic.trade_date = '"+sDateStr+@"'
+                                                                     and daily_basic.turnover_rate_f >="+turnover_low+@" and daily_basic.turnover_rate_f <="+turnover_height, new SQLiteParameter[0]);
+                List<ShowStockItem> showList = new List<ShowStockItem>();
+                for (int i = 0; i < tables_info.Rows.Count; i++)
+                {
+                    showList.Add(new ShowStockItem(tables_info.Rows[i][0].ToString(), tables_info.Rows[i][1].ToString()));
+                }
+                ListView_StockList.ItemsSource = showList;
+            }
         }
     }
 }

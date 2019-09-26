@@ -96,6 +96,7 @@
     <Compile Include="SelectExForm.xaml.cs">
       <DependentUpon>SelectExForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ShowStockItem.cs" />
     <Compile Include="SqliteHelper.cs" />
     <Compile Include="StockBasicMgr.cs" />
     <Compile Include="TradeCalMgr.cs" />
