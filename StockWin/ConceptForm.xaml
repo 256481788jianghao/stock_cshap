@@ -35,18 +35,37 @@
         <DatePicker x:Name="DatePicker_sDate_p" Grid.Row="2"></DatePicker>
         <DatePicker x:Name="DatePicker_eDate_p" Grid.Row="2" Grid.Column="1"></DatePicker>
         <Button x:Name="Button_Do_P" Grid.Row="2" Grid.Column="2" Content="查询" Click="Button_Do_P_Click"></Button>
-        <ListView x:Name="ListView_Main_P" Grid.Row="3" Grid.ColumnSpan="4" SelectionChanged="ListView_Main_P_SelectionChanged">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="日期" DisplayMemberBinding="{Binding DateStr}"/>
-                    <GridViewColumn Header="第一名" DisplayMemberBinding="{Binding name_1}"/>
-                    <GridViewColumn Header="第二名" DisplayMemberBinding="{Binding name_2}"/>
-                    <GridViewColumn Header="第三名" DisplayMemberBinding="{Binding name_3}"/>
-                    <GridViewColumn Header="第N名" DisplayMemberBinding="{Binding last_name_1}"/>
-                    <GridViewColumn Header="第N-1名" DisplayMemberBinding="{Binding last_name_2}"/>
-                    <GridViewColumn Header="第N-2名" DisplayMemberBinding="{Binding last_name_3}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <Grid Grid.Row="3" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="ListView_Main_P" Grid.Row="3" SelectionChanged="ListView_Main_P_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="日期" DisplayMemberBinding="{Binding DateStr}"/>
+                        <GridViewColumn Header="第一名" DisplayMemberBinding="{Binding name_1}"/>
+                        <GridViewColumn Header="第二名" DisplayMemberBinding="{Binding name_2}"/>
+                        <GridViewColumn Header="第三名" DisplayMemberBinding="{Binding name_3}"/>
+                        <GridViewColumn Header="第N名" DisplayMemberBinding="{Binding last_name_1}"/>
+                        <GridViewColumn Header="第N-1名" DisplayMemberBinding="{Binding last_name_2}"/>
+                        <GridViewColumn Header="第N-2名" DisplayMemberBinding="{Binding last_name_3}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView x:Name="ListView_Main_P_Sta" Grid.Column="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="板块" DisplayMemberBinding="{Binding concept_name}"/>
+                        <GridViewColumn Header="第一名次数" DisplayMemberBinding="{Binding name_1_num}"/>
+                        <GridViewColumn Header="第二名次数" DisplayMemberBinding="{Binding name_2_num}"/>
+                        <GridViewColumn Header="第三名次数" DisplayMemberBinding="{Binding name_3_num}"/>
+                        <GridViewColumn Header="第N名次数" DisplayMemberBinding="{Binding last_name_1_num}"/>
+                        <GridViewColumn Header="第N-1名次数" DisplayMemberBinding="{Binding last_name_2_num}"/>
+                        <GridViewColumn Header="第N-2名次数" DisplayMemberBinding="{Binding last_name_3_num}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
 </Window>

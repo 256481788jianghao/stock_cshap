@@ -29,7 +29,7 @@ namespace StockWin
         Thread m_msgThread;
         bool m_threadloop = true;
 
-        public delegate void UpdateConceptPListView(string dateStr, string name_1, string name_2, string name_3, string last_name_1, string last_name_2, string last_name_3);
+        public delegate void UpdateConceptPListView(string dateStr, string name_1, string name_2, string name_3, string last_name_1, string last_name_2, string last_name_3, bool isEnd);
 
         public event UpdateConceptPListView OnUpdateConceptPListView;
 
@@ -80,30 +80,45 @@ namespace StockWin
                                 DateTime eDate = msg.eDate;
                                 List<DailyMgr.DailyItem> daily_list = GVL.DailyMgr.GetDaily(sDate, eDate);
 
-                                List<string> id_list = new List<string>();
+                                Dictionary<DateTime, List<DailyMgr.DailyItem>> m_daily_dict = new Dictionary<DateTime, List<DailyMgr.DailyItem>>();
+                                for (DateTime tDate = sDate; tDate <= eDate; tDate = tDate.AddDays(1))
+                                {
+                                    List<DailyMgr.DailyItem> dItem = daily_list.FindAll(it => it.trade_date == tDate);
+                                    m_daily_dict.Add(tDate, dItem);
+                                }
+
+
+                                    List<string> id_list = new List<string>();
                                 DataTable tables_info_concept_info = SQLiteHelper.GetDataTable(@"SELECT code FROM concept_info", new SQLiteParameter[0]);
                                 for (int i = 0; i < tables_info_concept_info.Rows.Count; i++)
                                 {
                                     id_list.Add(tables_info_concept_info.Rows[i][0].ToString());
                                 }
-
+                                List<ConceptFormItem> m_items = new List<ConceptFormItem>(500);
                                 for (DateTime tDate = sDate; tDate <= eDate; tDate = tDate.AddDays(1))
                                 {
+                                    DateTime debug_stime = DateTime.Now;
                                     if (!GVL.TradeCalMgr.IsOpenDate(tDate)) { continue; }
-                                    List<ConceptFormItem> m_items = new List<ConceptFormItem>();
+                                    m_items.Clear();
                                     foreach (string id in id_list)
                                     {
+                                        
                                         List<ConceptInfoMgr.ConceptInfoItem> subList = GVL.ConceptInfoMgr.GetConceptInfo().FindAll(it => it.code == id);
+                                        
                                         double tNum = subList.Count;
                                         string cName = "";
                                         double HpNum = 0;
                                         double MeanPNum = 0;
                                         List<double> pct_change_list = new List<double>();
+                                        DateTime debug_stime2 = DateTime.Now;
                                         for (int i = 0; i < tNum; i++)
                                         {
                                             cName = subList[i].concept_name;
                                             string ts_code = subList[i].ts_code;
-                                            DailyMgr.DailyItem daily_item = daily_list.Find(it => it.ts_code == ts_code && it.trade_date == tDate);
+
+                                            List<DailyMgr.DailyItem> sub_daily_list = m_daily_dict[tDate];
+                                            DailyMgr.DailyItem daily_item = sub_daily_list.Find(it => it.ts_code == ts_code);
+
                                             if (daily_item != null)
                                             {
                                                 double pct_change = daily_item.pct_change;
@@ -112,13 +127,20 @@ namespace StockWin
                                                     HpNum += 1;
                                                 }
                                                 MeanPNum += pct_change;
-                                                pct_change_list.Add(pct_change);
+                                                //pct_change_list.Add(pct_change);
                                             }
                                         }
+                                        TimeSpan dtime2 = DateTime.Now - debug_stime2;
+                                        Console.WriteLine("dtem2:" + dtime2.TotalMilliseconds+" id;"+id+" tnum:"+tNum);
                                         MeanPNum = MeanPNum / tNum;
-                                        double MidPValue = GVL.FindMidValue(pct_change_list);
+                                        double MidPValue = 0;// GVL.FindMidValue(pct_change_list);
                                         m_items.Add(new ConceptFormItem(cName, tNum, HpNum, MeanPNum, MidPValue));
+                                        
                                     }
+
+                                    TimeSpan dtime1 = DateTime.Now - debug_stime;
+                                    Console.WriteLine("dtem1:" + dtime1.TotalMilliseconds + " stime:" + debug_stime.ToString() + " cout:" + m_items.Count + "tdate:" + tDate.ToShortDateString());
+
 
                                     if (m_items.Count < 3) { continue; }
 
@@ -137,11 +159,11 @@ namespace StockWin
                                             return 1;
                                         }
                                     });
-
                                     string tDateStr = tDate.ToString("yyyyMMdd");
                                     int items_cout = m_items.Count;
-                                    OnUpdateConceptPListView?.Invoke(tDateStr, m_items[0].ConceptName, m_items[1].ConceptName, m_items[2].ConceptName, m_items[items_cout-1].ConceptName, m_items[items_cout - 2].ConceptName, m_items[items_cout - 3].ConceptName);
+                                    OnUpdateConceptPListView?.Invoke(tDateStr, m_items[0].ConceptName, m_items[1].ConceptName, m_items[2].ConceptName, m_items[items_cout - 1].ConceptName, m_items[items_cout - 2].ConceptName, m_items[items_cout - 3].ConceptName, false);
                                 }
+                                OnUpdateConceptPListView?.Invoke("", "", "", "", "", "", "", true);
                             }
                         }
 

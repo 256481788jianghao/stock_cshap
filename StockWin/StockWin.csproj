@@ -95,6 +95,7 @@
     <Compile Include="GVL.cs" />
     <Compile Include="Item\ConceptFormItem.cs" />
     <Compile Include="Item\ConceptPFormItem.cs" />
+    <Compile Include="Item\ConceptPStaFormItem.cs" />
     <Compile Include="MoneyFlowMgr.cs" />
     <Compile Include="MoneyFowAndPriceForm.xaml.cs">
       <DependentUpon>MoneyFowAndPriceForm.xaml</DependentUpon>

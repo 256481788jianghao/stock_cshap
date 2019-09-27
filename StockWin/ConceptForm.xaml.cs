@@ -95,18 +95,75 @@ namespace StockWin
             ListView_Main.ItemsSource = m_items;
         }
 
-        void UpdateConceptPListView(string dateStr, string name_1, string name_2, string name_3,string last_name_1, string last_name_2, string last_name_3)
+        List<ConceptPStaFormItem> m_ConceptPStaFormItemList = new List<ConceptPStaFormItem>();
+        void UpdateConceptPListView(string dateStr, string name_1, string name_2, string name_3,string last_name_1, string last_name_2, string last_name_3,bool isEnd)
         {
-            Dispatcher.BeginInvoke(new Action(delegate
+            if (!isEnd)
             {
-                ListView_Main_P.Items.Insert(0, new ConceptPFormItem(dateStr, name_1, name_2, name_3, last_name_1, last_name_2, last_name_3));
-            }));
+                SetConceptPStaFormItemList(name_1, 1);
+                SetConceptPStaFormItemList(name_2, 2);
+                SetConceptPStaFormItemList(name_3, 3);
+                SetConceptPStaFormItemList(last_name_1, -1);
+                SetConceptPStaFormItemList(last_name_2, -2);
+                SetConceptPStaFormItemList(last_name_3, -3);
+                Dispatcher.BeginInvoke(new Action(delegate
+                {
+                    ListView_Main_P.Items.Insert(0, new ConceptPFormItem(dateStr, name_1, name_2, name_3, last_name_1, last_name_2, last_name_3));
+                }));
+            }
+            else
+            {
+                m_ConceptPStaFormItemList.Sort((a, b) =>
+                {
+                    int f_num_a = a.name_1_num + a.name_2_num + a.name_3_num;
+                    int b_num_a = a.last_name_1_num + a.last_name_2_num + a.last_name_3_num;
+                    int f_num_b = b.name_1_num + b.name_2_num + b.name_3_num;
+                    int b_num_b = b.last_name_1_num + b.last_name_2_num + b.last_name_3_num;
+
+                    if(f_num_a > f_num_b)
+                    {
+                        return -1;
+                    }else if(f_num_a == f_num_b)
+                    {
+                        if(b_num_a < b_num_b) { return -1; }
+                        else if(b_num_a == b_num_b) { return 0; }
+                        else { return 1; }
+                    }
+                    else { return 1; }
+
+                });
+                Dispatcher.BeginInvoke(new Action(delegate {
+                    ListView_Main_P_Sta.ItemsSource = m_ConceptPStaFormItemList;
+                }));
+                
+            }
             
+        }
+
+        private void SetConceptPStaFormItemList(string name,int type)
+        {
+            ConceptPStaFormItem item = m_ConceptPStaFormItemList.Find(it => it.concept_name == name);
+            if(item == null)
+            {
+                item = new ConceptPStaFormItem(name);
+                m_ConceptPStaFormItemList.Add(item);
+            }
+            switch (type)
+            {
+                case 1: { item.name_1_num += 1;break; }
+                case 2: { item.name_2_num += 1; break; }
+                case 3: { item.name_3_num += 1; break; }
+                case -1: { item.last_name_1_num += 1; break; }
+                case -2: { item.last_name_2_num += 1; break; }
+                case -3: { item.last_name_3_num += 1; break; }
+                default:break;
+            }
         }
 
         private void Button_Do_P_Click(object sender, RoutedEventArgs e)
         {
             ListView_Main_P.Items.Clear();
+            m_ConceptPStaFormItemList = new List<ConceptPStaFormItem>();
 
             DateTime sDate = Convert.ToDateTime(DatePicker_sDate_p.Text);
             DateTime eDate = Convert.ToDateTime(DatePicker_eDate_p.Text);
