@@ -77,5 +77,35 @@ namespace StockWin
             Init(ts_code, stime, etime);
             return m_DailyList;
         }
+
+        public List<DailyItem> GetDaily(DateTime stime, DateTime etime)
+        {
+            List<DailyItem> m_ret = new List<DailyItem>();
+            string st = stime.ToString("yyyyMMdd");
+            string et = etime.ToString("yyyyMMdd");
+            string cmd = @"SELECT * FROM daily where trade_date >= " + st + " and trade_date <= " + et;
+
+            m_Table = SQLiteHelper.GetDataTable(cmd, new SQLiteParameter[0]);
+            if (m_Table != null)
+            {
+                for (int i = 0; i < m_Table.Rows.Count; i++)
+                {
+                    m_ret.Add(new DailyItem(
+                        m_Table.Rows[i][1].ToString(),
+                        m_Table.Rows[i][2].ToString(),
+                        m_Table.Rows[i][3].ToString(),
+                        m_Table.Rows[i][4].ToString(),
+                        m_Table.Rows[i][5].ToString(),
+                        m_Table.Rows[i][6].ToString(),
+                        m_Table.Rows[i][7].ToString(),
+                        m_Table.Rows[i][8].ToString(),
+                        m_Table.Rows[i][9].ToString(),
+                        m_Table.Rows[i][10].ToString(),
+                        m_Table.Rows[i][11].ToString()
+                        ));
+                }
+            }
+            return m_ret;
+        }
     }
 }

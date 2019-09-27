@@ -86,21 +86,32 @@
     <Compile Include="AnsListViewForm.xaml.cs">
       <DependentUpon>AnsListViewForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConceptForm.xaml.cs">
+      <DependentUpon>ConceptForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConceptInfoMgr.cs" />
     <Compile Include="DailyBasicMgr.cs" />
     <Compile Include="DailyMgr.cs" />
     <Compile Include="GVL.cs" />
+    <Compile Include="Item\ConceptFormItem.cs" />
+    <Compile Include="Item\ConceptPFormItem.cs" />
     <Compile Include="MoneyFlowMgr.cs" />
     <Compile Include="MoneyFowAndPriceForm.xaml.cs">
       <DependentUpon>MoneyFowAndPriceForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MsgCMDMgr.cs" />
     <Compile Include="SelectExForm.xaml.cs">
       <DependentUpon>SelectExForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ShowStockItem.cs" />
+    <Compile Include="Item\ShowStockItem.cs" />
     <Compile Include="SqliteHelper.cs" />
     <Compile Include="StockBasicMgr.cs" />
     <Compile Include="TradeCalMgr.cs" />
     <Page Include="AnsListViewForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConceptForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -52,5 +52,18 @@ namespace StockWin
         {
             return m_TradeCalList.FindAll(it => it.is_open);
         }
+
+        public bool IsOpenDate(DateTime date)
+        {
+            TradeCalItem item = m_TradeCalList.Find(it => it.cal_date == date);
+            if (item == null)
+            {
+                return false;
+            }
+            else
+            {
+                return item.is_open;
+            }
+        }
     }
 }

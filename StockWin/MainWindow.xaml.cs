@@ -144,5 +144,17 @@ namespace StockWin
                 ListView_StockList.ItemsSource = showList;
             }
         }
+
+        private void MenuItem_Concept_Click(object sender, RoutedEventArgs e)
+        {
+            ConceptForm form = new ConceptForm();
+            form.Show();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            GVL.MsgCMDMgr.Release();
+            System.Environment.Exit(0);
+        }
     }
 }

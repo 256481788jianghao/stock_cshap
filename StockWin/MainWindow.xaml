@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockWin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
     <Window.Resources>
         <Style TargetType="MenuItem">
             <Setter Property="FontSize" Value="15"></Setter>
@@ -31,6 +31,7 @@
         <Menu Grid.Row="0">
             <MenuItem Header="操作">
                 <MenuItem x:Name="MenuItem_LoadDB" Header="数据库载入" Click="MenuItem_LoadDB_Click"></MenuItem>
+                <MenuItem x:Name="MenuItem_Concept" Header="概念相关数据" Click="MenuItem_Concept_Click"/>
                 <MenuItem x:Name="MenuItem_Test" Header="Test" Click="MenuItem_Test_Click" ></MenuItem>
             </MenuItem>
             <MenuItem Header="参数配置" Click="MenuItem_Click"></MenuItem>

@@ -14,11 +14,15 @@ namespace StockWin
         public static MoneyFlowMgr MoneyFlowMgr = new MoneyFlowMgr();
         public static DailyMgr DailyMgr = new DailyMgr();
         public static DailyBasicMgr DailyBasicMgr = new DailyBasicMgr();
+        public static ConceptInfoMgr ConceptInfoMgr = new ConceptInfoMgr();
+        public static MsgCMDMgr MsgCMDMgr = new MsgCMDMgr();
 
         public static void Init()
         {
             StockBasicMgr.Init();
             TradeCalMgr.Init();
+            ConceptInfoMgr.Init();
+            MsgCMDMgr.Init();
             
         }
 
@@ -61,6 +65,21 @@ namespace StockWin
                 ans.Add(item / maxValue);
             }
             return ans;
+        }
+
+        public static double FindMidValue(List<double> list)
+        {
+            int num = list.Count;
+            if (num == 0)
+            {
+                return -100000;
+            }
+            list.Sort((a, b) => {
+                if (a > b) { return 1; }
+                else if (a == b) { return 0; }
+                else { return -1; }
+            });
+            return list[num / 2];
         }
     }
 }

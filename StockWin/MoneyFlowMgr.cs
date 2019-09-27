@@ -104,5 +104,43 @@ namespace StockWin
             Init(ts_code, stime, etime);
             return m_MoneyFlowList;
         }
+
+        public List<MoneyFlowItem> GetMoneyFlow(DateTime stime, DateTime etime)
+        {
+            List<MoneyFlowItem> m_Ret = new List<MoneyFlowItem>();
+            string st = stime.ToString("yyyyMMdd");
+            string et = etime.ToString("yyyyMMdd");
+            string cmd = @"SELECT * FROM money_flow where trade_date >= " + st + " and trade_date <= " + et;
+            m_Table = SQLiteHelper.GetDataTable(cmd, new SQLiteParameter[0]);
+            if (m_Table != null)
+            {
+                for (int i = 0; i < m_Table.Rows.Count; i++)
+                {
+                    m_Ret.Add(new MoneyFlowItem(
+                        m_Table.Rows[i][1].ToString(),
+                        m_Table.Rows[i][2].ToString(),
+                        m_Table.Rows[i][3].ToString(),
+                        m_Table.Rows[i][4].ToString(),
+                        m_Table.Rows[i][5].ToString(),
+                        m_Table.Rows[i][6].ToString(),
+                        m_Table.Rows[i][7].ToString(),
+                        m_Table.Rows[i][8].ToString(),
+                        m_Table.Rows[i][9].ToString(),
+                        m_Table.Rows[i][10].ToString(),
+                        m_Table.Rows[i][11].ToString(),
+                        m_Table.Rows[i][12].ToString(),
+                        m_Table.Rows[i][13].ToString(),
+                        m_Table.Rows[i][14].ToString(),
+                        m_Table.Rows[i][15].ToString(),
+                        m_Table.Rows[i][16].ToString(),
+                        m_Table.Rows[i][17].ToString(),
+                        m_Table.Rows[i][18].ToString(),
+                        m_Table.Rows[i][19].ToString(),
+                        m_Table.Rows[i][20].ToString()
+                        ));
+                }
+            }
+            return m_Ret;
+        }
     }
 }
