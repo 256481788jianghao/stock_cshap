@@ -53,6 +53,7 @@ namespace StockWin
             {
                 List<ConceptInfoMgr.ConceptInfoItem> subList = GVL.ConceptInfoMgr.GetConceptInfo().FindAll(it => it.code == id);
                 double tNum = subList.Count;
+                double ac_tNum = tNum;
                 string cName = "";
                 double HpNum = 0;
                 double MeanPNum = 0;
@@ -72,8 +73,12 @@ namespace StockWin
                         MeanPNum += pct_change;
                         pct_change_list.Add(pct_change);
                     }
+                    else
+                    {
+                        ac_tNum -= 1;
+                    }
                 }
-                MeanPNum = MeanPNum / tNum;
+                MeanPNum = MeanPNum / ac_tNum;
                 double MidPValue = GVL.FindMidValue(pct_change_list);
                 m_items.Add(new ConceptFormItem(cName, tNum, HpNum, MeanPNum, MidPValue));
             }
