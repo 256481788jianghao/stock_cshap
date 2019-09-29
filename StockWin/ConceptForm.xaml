@@ -17,11 +17,14 @@
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <DatePicker x:Name="DatePicker_sDate"></DatePicker>
-        <Button x:Name="Button_Do" Grid.Column="1" Content="查询" Click="Button_Do_Click"></Button>
-        <ListView x:Name="ListView_Main" Grid.Row="1" Grid.ColumnSpan="4">
+        <ComboBox x:Name="ComboBox_ConceptList" Grid.Column="1" IsEditable="True" TextInput="ComboBox_ConceptList_TextInput"></ComboBox>
+        <Button x:Name="Button_Do" Grid.Column="2" Content="查询" Click="Button_Do_Click"></Button>
+        <ListView x:Name="ListView_Main" Grid.Row="1" Grid.ColumnSpan="6">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="概念" DisplayMemberBinding="{Binding ConceptName}"/>
@@ -29,13 +32,16 @@
                     <GridViewColumn Header="涨停数" DisplayMemberBinding="{Binding HStockNum}"/>
                     <GridViewColumn Header="平均涨幅" DisplayMemberBinding="{Binding MeanChange}"/>
                     <GridViewColumn Header="中位数涨幅" DisplayMemberBinding="{Binding MidChange}"/>
+                    <GridViewColumn Header="相关度" DisplayMemberBinding="{Binding RelationShipRate}"/>
                 </GridView>
             </ListView.View>
         </ListView>
         <DatePicker x:Name="DatePicker_sDate_p" Grid.Row="2"></DatePicker>
         <DatePicker x:Name="DatePicker_eDate_p" Grid.Row="2" Grid.Column="1"></DatePicker>
         <Button x:Name="Button_Do_P" Grid.Row="2" Grid.Column="2" Content="查询" Click="Button_Do_P_Click"></Button>
-        <Grid Grid.Row="3" Grid.ColumnSpan="4">
+        <CheckBox x:Name="CheckBox_USE_Qian" Grid.Row="2" Grid.Column="3" Content="仅计算前："></CheckBox>
+        <TextBox x:Name="TextBox_Use_Qian" Grid.Row="2" Grid.Column="4" Text="20"></TextBox>
+        <Grid Grid.Row="3" Grid.ColumnSpan="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

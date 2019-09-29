@@ -31,6 +31,11 @@ namespace StockWin
             DatePicker_eDate_p.Text = DateTime.Now.ToShortDateString();
 
             GVL.MsgCMDMgr.OnUpdateConceptPListView += new MsgCMDMgr.UpdateConceptPListView(UpdateConceptPListView);
+            DataTable tables_info_concept_info = SQLiteHelper.GetDataTable(@"SELECT name FROM concept_info", new SQLiteParameter[0]);
+            for (int i = 0; i < tables_info_concept_info.Rows.Count; i++)
+            {
+                ComboBox_ConceptList.Items.Add(tables_info_concept_info.Rows[i][0].ToString());
+            }
         }
 
         
@@ -49,6 +54,12 @@ namespace StockWin
 
             List<ConceptFormItem> m_items = new List<ConceptFormItem>();
             List<DailyMgr.DailyItem> daily_list = GVL.DailyMgr.GetDaily(sDate, sDate);
+
+            string base_concept_name = null;
+            if(ComboBox_ConceptList.SelectedIndex > -1)
+            {
+                base_concept_name = ComboBox_ConceptList.SelectedItem as string;
+            }
             foreach (string id in id_list)
             {
                 List<ConceptInfoMgr.ConceptInfoItem> subList = GVL.ConceptInfoMgr.GetConceptInfo().FindAll(it => it.code == id);
@@ -80,7 +91,12 @@ namespace StockWin
                 }
                 MeanPNum = MeanPNum / ac_tNum;
                 double MidPValue = GVL.FindMidValue(pct_change_list);
-                m_items.Add(new ConceptFormItem(cName, tNum, HpNum, MeanPNum, MidPValue));
+                double relationship = 0;
+                if (!string.IsNullOrEmpty(base_concept_name))
+                {
+                    relationship = GVL.ConceptInfoMgr.GetRelationShipEx(id, base_concept_name);
+                }
+                m_items.Add(new ConceptFormItem(cName, tNum, HpNum, MeanPNum, MidPValue, relationship));
             }
 
             m_items.Sort((a,b)=> {
@@ -177,12 +193,30 @@ namespace StockWin
             msg.command = MsgCMDMgr.MsgCMD.UpdateConceptPListView;
             msg.sDate = sDate;
             msg.eDate = eDate;
+            if (Convert.ToBoolean(CheckBox_USE_Qian.IsChecked))
+            {
+                msg.use_qian = true;
+                msg.use_qian_value = Convert.ToDouble(TextBox_Use_Qian.Text);
+            }
+            else
+            {
+                msg.use_qian = false;
+            }
             GVL.MsgCMDMgr.PushCMD(msg);
         }
 
         private void ListView_Main_P_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
            
+        }
+
+        private void ComboBox_ConceptList_TextInput(object sender, TextCompositionEventArgs e)
+        {
+            //string key = e.Text;
+            //if (!string.IsNullOrEmpty(key))
+            //{
+            //    ComboBox_ConceptList.Items.Clear();
+            //}
         }
     }
 }

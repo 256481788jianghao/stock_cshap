@@ -21,6 +21,8 @@ namespace StockWin
             public MsgCMD command;
             public DateTime sDate;
             public DateTime eDate;
+            public bool use_qian = false;
+            public double use_qian_value = 0;
         }
 
         List<Msg> m_MsgList = new List<Msg>();
@@ -112,12 +114,22 @@ namespace StockWin
                                         double MeanPNum = 0;
                                         List<double> pct_change_list = new List<double>();
                                         DateTime debug_stime2 = DateTime.Now;
+                                        List<DailyMgr.DailyItem> sub_daily_list = m_daily_dict[tDate];
+                                        if (msg.use_qian)
+                                        {
+                                            double temp_num = tNum * msg.use_qian_value / 100.0;
+                                            tNum = Convert.ToInt32(temp_num) + 1;
+                                            sub_daily_list.Sort((a, b) => {
+                                                if(a.pct_change > b.pct_change) { return -1; }
+                                                else if (a.pct_change == b.pct_change) { return 0; }
+                                                else { return 1; }
+                                            });
+                                        }
                                         for (int i = 0; i < tNum; i++)
                                         {
                                             cName = subList[i].concept_name;
                                             string ts_code = subList[i].ts_code;
 
-                                            List<DailyMgr.DailyItem> sub_daily_list = m_daily_dict[tDate];
                                             DailyMgr.DailyItem daily_item = sub_daily_list.Find(it => it.ts_code == ts_code);
 
                                             if (daily_item != null)

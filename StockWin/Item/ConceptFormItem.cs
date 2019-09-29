@@ -13,6 +13,12 @@ namespace StockWin.Item
         public double HStockNum { get; set; }
         public double MeanChange { get; set; }
         public double MidChange { get; set; }
+        public double RelationShipRate { get; set; }
+
+        public ConceptFormItem(string conceptName, double sNum, double hStockNum, double meanChange, double midChange, double relationShipRate) : this(conceptName, sNum, hStockNum, meanChange, midChange)
+        {
+            RelationShipRate = relationShipRate;
+        }
 
         public ConceptFormItem(string conceptName, double sNum, double hStockNum, double meanChange, double midChange) : this(conceptName, sNum, hStockNum, meanChange)
         {

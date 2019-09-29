@@ -48,5 +48,41 @@ namespace StockWin
             //Init();
             return m_List;
         }
+
+        public double GetRelationShipEx(string ts_no_a, string name_b)
+        {
+            ConceptInfoItem item_a = m_List.Find(it => it.code == ts_no_a);
+            if(item_a != null)
+            {
+                string name_a = item_a.concept_name;
+                return GetRelationShip(name_a, name_b);
+            }
+            return 0;
+        }
+        public double GetRelationShip(string name_a,string name_b)
+        {
+            if(name_a == name_b)
+            {
+                return 100;
+            }
+            else
+            {
+                List<ConceptInfoItem> list_a = m_List.FindAll(it => it.concept_name == name_a);
+                List<ConceptInfoItem> list_b = m_List.FindAll(it => it.concept_name == name_b);
+
+                double public_tscode_num = 0;
+                foreach(ConceptInfoItem item_a in list_a)
+                {
+                    foreach(ConceptInfoItem item_b in list_b)
+                    {
+                        if(item_a.ts_code == item_b.ts_code)
+                        {
+                            public_tscode_num += 1;
+                        }
+                    }
+                }
+                return public_tscode_num * 100 / (list_a.Count + list_b.Count - public_tscode_num);
+            }
+        }
     }
 }
