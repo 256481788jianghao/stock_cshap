@@ -32,6 +32,12 @@ namespace StockWin
             SQLiteHelper.m_Path = ConfigureReader.ConfigP.StockDBP.StockDBPath;
             DatePicker_Select_SDate.Text = DateTime.Now.AddDays(-30).ToShortDateString();
             DatePicker_Select_EDate.Text = DateTime.Now.ToShortDateString();
+
+            DataTable tables_info_concept_info = SQLiteHelper.GetDataTable(@"SELECT name FROM concept_info", new SQLiteParameter[0]);
+            for (int i = 0; i < tables_info_concept_info.Rows.Count; i++)
+            {
+                ComboBox_Bankuai_Select.Items.Add(tables_info_concept_info.Rows[i][0].ToString());
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -155,6 +161,25 @@ namespace StockWin
         {
             GVL.MsgCMDMgr.Release();
             System.Environment.Exit(0);
+        }
+
+        private void Button_Do_Bankuai_Click(object sender, RoutedEventArgs e)
+        {
+            if(ComboBox_Bankuai_Select.SelectedIndex > -1)
+            {
+                string concept_name = ComboBox_Bankuai_Select.SelectedItem as string;
+                List<ConceptInfoMgr.ConceptInfoItem> m_list = GVL.ConceptInfoMgr.GetConceptInfo();
+                List<ConceptInfoMgr.ConceptInfoItem> m_sub_list = m_list.FindAll(it => it.concept_name == concept_name);
+                if(concept_name != null)
+                {
+                    List<ShowStockItem> showList = new List<ShowStockItem>();
+                    for (int i = 0; i < m_sub_list.Count; i++)
+                    {
+                        showList.Add(new ShowStockItem(m_sub_list[i].ts_code, m_sub_list[i].name));
+                    }
+                    ListView_StockList.ItemsSource = showList;
+                }
+            }
         }
     }
 }

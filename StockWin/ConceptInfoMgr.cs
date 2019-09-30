@@ -15,6 +15,12 @@ namespace StockWin
             public string code { get; set; }
             public string concept_name { get; set; }
             public string ts_code { get; set; }
+            public string name { get; set; }
+
+            public ConceptInfoItem(string code, string concept_name, string ts_code, string name) : this(code, concept_name, ts_code)
+            {
+                this.name = name;
+            }
 
             public ConceptInfoItem(string code, string concept_name, string ts_code)
             {
@@ -29,7 +35,7 @@ namespace StockWin
 
         public void Init()
         {
-            m_Table = SQLiteHelper.GetDataTable(@"SELECT id,concept_name,ts_code FROM concept_detail", new SQLiteParameter[0]);
+            m_Table = SQLiteHelper.GetDataTable(@"SELECT id,concept_name,ts_code,name FROM concept_detail", new SQLiteParameter[0]);
             if (m_Table != null)
             {
                 for (int i = 0; i < m_Table.Rows.Count; i++)
@@ -37,7 +43,8 @@ namespace StockWin
                     m_List.Add(new ConceptInfoItem(
                         m_Table.Rows[i][0].ToString(),
                         m_Table.Rows[i][1].ToString(),
-                        m_Table.Rows[i][2].ToString()
+                        m_Table.Rows[i][2].ToString(),
+                        m_Table.Rows[i][3].ToString()
                         ));
                 }
             }

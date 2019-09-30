@@ -78,6 +78,9 @@
                     <TextBox x:Name="TextBox_Turnover_height" Grid.Column="5"></TextBox>
                     <Button x:Name="Button_Do_Select" Grid.Row="1" Grid.Column="1" Content="查询" Click="Button_Do_Select_Click"></Button>
                     <Button x:Name="Button_Do_ChangeSelect" Grid.Column="6" Content="查询" Click="Button_Do_ChangeSelect_Click"></Button>
+                    <Label Content="板块:" Grid.Row="1" Grid.Column="3"></Label>
+                    <ComboBox x:Name="ComboBox_Bankuai_Select" Grid.Row="1" Grid.Column="4" IsEditable="True"></ComboBox>
+                    <Button x:Name="Button_Do_Bankuai" Grid.Row="1" Grid.Column="5" Content="检查" Click="Button_Do_Bankuai_Click"></Button>
                 </Grid>
             </GroupBox>
             <ListView x:Name="ListView_StockList" Grid.Row="1">
