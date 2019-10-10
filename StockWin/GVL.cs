@@ -81,5 +81,78 @@ namespace StockWin
             });
             return list[num / 2];
         }
+        public static double Sum(List<double> list)
+        {
+            double ret = 0;
+            foreach(double item in list)
+            {
+                ret += item;
+            }
+            return ret;
+        }
+        public static double Mean(List<double> list)
+        {
+            if(list.Count == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return Sum(list) / list.Count;
+            }
+        }
+
+        public static double Var(List<double> list)
+        {
+            if(list.Count == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                double m_v = Mean(list);
+                double ret = 0;
+                foreach(double item in list)
+                {
+                    ret += Math.Pow(item - m_v, 2);
+                }
+                return ret / list.Count;
+            }
+        }
+
+        public static double Cov(List<double> list1, List<double> list2)
+        {
+            if(list1.Count != list2.Count || list1.Count == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                List<double> r_list = new List<double>();
+                double m_l1 = Mean(list1);
+                double m_l2 = Mean(list2);
+                for(int i = 0; i < list1.Count; i++)
+                {
+                    r_list.Add((list1[i] - m_l1) * (list2[i] - m_l2));
+                }
+                return Mean(r_list);
+            }
+        }
+
+        public static double P_relation(List<double> list1, List<double> list2)
+        {
+            double v_l1 = Var(list1);
+            double v_l2 = Var(list2);
+            double ret = 0;
+            if(v_l1 == 0 || v_l2 == 0)
+            {
+                return ret;
+            }
+            else
+            {
+                double v_cov = Cov(list1, list2);
+                return v_cov / Math.Sqrt(v_l1) / Math.Sqrt(v_l2);
+            }
+        }
     }
 }

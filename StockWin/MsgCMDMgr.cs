@@ -90,7 +90,7 @@ namespace StockWin
                                 }
 
 
-                                    List<string> id_list = new List<string>();
+                                List<string> id_list = new List<string>();
                                 DataTable tables_info_concept_info = SQLiteHelper.GetDataTable(@"SELECT code FROM concept_info", new SQLiteParameter[0]);
                                 for (int i = 0; i < tables_info_concept_info.Rows.Count; i++)
                                 {
@@ -159,7 +159,7 @@ namespace StockWin
                                     Console.WriteLine("dtem1:" + dtime1.TotalMilliseconds + " stime:" + debug_stime.ToString() + " cout:" + m_items.Count + "tdate:" + tDate.ToShortDateString());
 
 
-                                    if (m_items.Count < 3) { continue; }
+                                    //if (m_items.Count < 3) { continue; }
 
                                     m_items.Sort((a, b) =>
                                     {

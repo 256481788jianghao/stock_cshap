@@ -35,7 +35,7 @@ namespace StockWin
                 this.trade_date = trade_date;
                 this.close = Convert.ToDouble(close);
                 this.turnover_rate = Convert.ToDouble(turnover_rate);
-                this.turnover_rate_f = Convert.ToDouble(turnover_rate_f);
+                this.turnover_rate_f = String.IsNullOrEmpty(turnover_rate_f)? 0:Convert.ToDouble(turnover_rate_f);
                 this.volume_ratio = String.IsNullOrEmpty(volume_ratio) ? -1 : Convert.ToDouble(volume_ratio);
                 this.pe = String.IsNullOrEmpty(pe) ? -1 : Convert.ToDouble(pe);
                 this.pe_ttm = String.IsNullOrEmpty(pe_ttm) ? -1 : Convert.ToDouble(pe_ttm);

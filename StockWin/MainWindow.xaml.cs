@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LiveCharts;
+using LiveCharts.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -24,6 +26,11 @@ namespace StockWin
     {
         List<TableNameItem> TableNameList = new List<TableNameItem>();
         List<TableNameItem> TableInfoList = new List<TableNameItem>();
+        public SeriesCollection SeriesCollection { get; set; }
+
+        string[] Line_Names_1 = new string[] { "收盘价"};
+        string[] Line_Names_2 = new string[] { "成交量","换手率","换手率变化率","特大单+大单买入","特大单+大单净量" };
+
 
         public MainWindow()
         {
@@ -38,6 +45,29 @@ namespace StockWin
             {
                 ComboBox_Bankuai_Select.Items.Add(tables_info_concept_info.Rows[i][0].ToString());
             }
+
+            SeriesCollection = new SeriesCollection();
+            LineSeries l1 = new LineSeries();
+            l1.Values = new ChartValues<double> { 3, 5, 7, 4 };
+            LineSeries l2 = new LineSeries();
+            l2.Values = new ChartValues<double> { 0.1, 0.2, 0.5 };
+            l2.ScalesYAt = 1;
+            SeriesCollection.Add(l1);
+            SeriesCollection.Add(l2);
+            DataContext = this;
+
+            foreach(string item in Line_Names_1)
+            {
+                ComBox_Line1.Items.Add(item);
+            }
+
+            foreach (string item in Line_Names_2)
+            {
+                ComBox_Line2.Items.Add(item);
+            }
+
+            ComBox_Line1.SelectedIndex = 0;
+            ComBox_Line2.SelectedIndex = 0;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -83,7 +113,12 @@ namespace StockWin
             ListView_TableTree.ItemsSource = TableNameList;
 
             GVL.Init();
-            ListView_StockList.ItemsSource = GVL.StockBasicMgr.GetStockBasic();
+            List<ShowStockItem> showList = new List<ShowStockItem>();
+            foreach(StockBasicMgr.StockBasicItem item in GVL.StockBasicMgr.GetStockBasic())
+            {
+                showList.Add(new ShowStockItem(item.ts_code, item.name));
+            }
+            ListView_StockList.ItemsSource = showList;
         }
 
         class TableNameItem
@@ -180,6 +215,130 @@ namespace StockWin
                     ListView_StockList.ItemsSource = showList;
                 }
             }
+        }
+
+        private void ListView_StockList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ListView_StockList.SelectedIndex > -1)
+            {
+                m_CurrentSelectItem = ListView_StockList.SelectedItem as ShowStockItem;
+                if(m_CurrentSelectItem != null)
+                {
+                    Label_Stock_Name.Content = m_CurrentSelectItem.name;
+                }
+            }
+        }
+        ShowStockItem m_CurrentSelectItem = null;
+        private void Button_Do_DrawLine_Click(object sender, RoutedEventArgs e)
+        {
+            if(m_CurrentSelectItem == null) { return; }
+            DateTime sTime = Convert.ToDateTime(DatePicker_Select_SDate.Text);
+            DateTime eTime = Convert.ToDateTime(DatePicker_Select_EDate.Text);
+
+            List<double> l1_values = new List<double>();
+            List<double> l2_values = new List<double>();
+
+            SeriesCollection.Clear();
+
+            if (ComBox_Line1.Text == Line_Names_1[0])
+            {
+                List<DailyMgr.DailyItem> daily_list = GVL.DailyMgr.GetDaily(m_CurrentSelectItem.ts_code, sTime, eTime);
+                if (daily_list != null)
+                {
+                    foreach (DailyMgr.DailyItem item in daily_list)
+                    {
+                        l1_values.Add(item.close);
+                    }
+                }
+            }
+
+            if(ComBox_Line2.Text == Line_Names_2[0])
+            {
+                List<DailyMgr.DailyItem> daily_list = GVL.DailyMgr.GetDaily(m_CurrentSelectItem.ts_code, sTime, eTime);
+                if (daily_list != null)
+                {
+                    foreach (DailyMgr.DailyItem item in daily_list)
+                    {
+                        l2_values.Add(item.vol);
+                    }
+                }
+            }
+            else if(ComBox_Line2.Text == Line_Names_2[1])
+            {
+                List<DailyBasicMgr.DailyBasicItem> dailybasic_list = GVL.DailyBasicMgr.GetDailyBasic(m_CurrentSelectItem.ts_code, sTime, eTime);
+                if(dailybasic_list != null)
+                {
+                    foreach (DailyBasicMgr.DailyBasicItem item in dailybasic_list)
+                    {
+                        l2_values.Add(item.turnover_rate_f);
+                    }
+                }
+            }
+            else if (ComBox_Line2.Text == Line_Names_2[2])
+            {
+                List<DailyBasicMgr.DailyBasicItem> dailybasic_list = GVL.DailyBasicMgr.GetDailyBasic(m_CurrentSelectItem.ts_code, sTime, eTime);
+                if (dailybasic_list != null)
+                {
+                    DailyBasicMgr.DailyBasicItem last_item = null;
+                    if(dailybasic_list.Count < 2) { return; }
+                    for (int i = 0; i < dailybasic_list.Count; i++)
+                    {
+                        DailyBasicMgr.DailyBasicItem item = dailybasic_list[i];
+                        if ( i == 0)
+                        {
+                            last_item = item;
+                            l2_values.Add(0);
+                        }
+                        else
+                        {
+                            l2_values.Add((item.turnover_rate_f - last_item.turnover_rate_f) / last_item.turnover_rate_f);
+                            last_item = item;
+                        }
+                        
+                    }
+                }
+            }
+            else if (ComBox_Line2.Text == Line_Names_2[3])
+            {
+                List<MoneyFlowMgr.MoneyFlowItem> MoneyFlowList = GVL.MoneyFlowMgr.GetMoneyFlow(m_CurrentSelectItem.ts_code,sTime, eTime);
+                if(MoneyFlowList != null)
+                {
+                    foreach(MoneyFlowMgr.MoneyFlowItem item in MoneyFlowList)
+                    {
+                        l2_values.Add(item.buy_elg_vol + item.buy_lg_vol);
+                    }
+                }
+            }
+            else if (ComBox_Line2.Text == Line_Names_2[4])
+            {
+                List<MoneyFlowMgr.MoneyFlowItem> MoneyFlowList = GVL.MoneyFlowMgr.GetMoneyFlow(m_CurrentSelectItem.ts_code, sTime, eTime);
+                if (MoneyFlowList != null)
+                {
+                    foreach (MoneyFlowMgr.MoneyFlowItem item in MoneyFlowList)
+                    {
+                        l2_values.Add(item.buy_elg_vol + item.buy_lg_vol - item.sell_elg_vol - item.sell_lg_vol);
+                    }
+                }
+            }
+
+            {
+                //l1_values.Clear();
+                //l2_values.Clear();
+                //for(int i = 1; i < 13; i++)
+                //{
+                //    l1_values.Add(i);
+                //    l2_values.Add(i);
+                //}
+                LineSeries l1 = new LineSeries();
+                l1.Values = new ChartValues<double> (l1_values);
+                LineSeries l2 = new LineSeries();
+                l2.Values = new ChartValues<double> (l2_values);
+                l2.ScalesYAt = 1;
+                SeriesCollection.Add(l1);
+                SeriesCollection.Add(l2);
+                MessageBox.Show("相关度："+GVL.P_relation(l1_values, l2_values));
+            }
+            
         }
     }
 }

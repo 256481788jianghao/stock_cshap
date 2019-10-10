@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockWin"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
     <Window.Resources>
@@ -63,7 +64,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
-                        
+
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -83,7 +84,7 @@
                     <Button x:Name="Button_Do_Bankuai" Grid.Row="1" Grid.Column="5" Content="检查" Click="Button_Do_Bankuai_Click"></Button>
                 </Grid>
             </GroupBox>
-            <ListView x:Name="ListView_StockList" Grid.Row="1">
+            <ListView x:Name="ListView_StockList" Grid.Row="1" SelectionChanged="ListView_StockList_SelectionChanged">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="代码" DisplayMemberBinding="{Binding Path=ts_code}"/>
@@ -99,19 +100,33 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
+                <ComboBox x:Name="ComBox_Line1" Grid.Column="2"></ComboBox>
+                <ComboBox x:Name="ComBox_Line2" Grid.Column="3"></ComboBox>
+                <Button x:Name="Button_Do_DrawLine" Grid.Column="4" Content="画线" Click="Button_Do_DrawLine_Click"></Button>
+                <Label x:Name="Label_Stock_Name" FontSize="20" Content="Test" Grid.ColumnSpan="2"></Label>
+                <lvc:CartesianChart x:Name="Carts_MP" Series="{Binding SeriesCollection}" Grid.Row="1" Grid.ColumnSpan="6" >
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis/>
+                        <lvc:Axis Position="RightTop" Foreground="#FF43872F">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator/>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
                 <!--Button x:Name="Button_MoneyFlowAndPrice" Content="股价与资金流关系" Click="Button_MoneyFlowAndPrice_Click"></-->
             </Grid>
         </Grid>
